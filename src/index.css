@@ -396,3 +396,72 @@ body {
   pointer-events: none;
   z-index: 0;
 }
+
+/* Mobile Responsive Adjustments */
+@media (max-width: 768px) {
+  .container {
+    padding: 5vh 1rem 3rem;
+  }
+
+  .title {
+    font-size: 2.2rem;
+    margin-bottom: 1.5rem;
+    letter-spacing: 2px;
+  }
+
+  .subtitle {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    padding: 0 10px;
+    line-height: 1.6;
+    word-break: keep-all;
+  }
+
+  .draw-button {
+    padding: 0.8rem 2rem;
+    font-size: 1.2rem;
+  }
+
+  .card-container {
+    margin-top: 2rem;
+    min-height: 520px;
+  }
+
+  .flip-card {
+    width: min(90vw, 340px);
+    height: 500px;
+  }
+
+  .card-face {
+    padding: 1.5rem 1rem;
+  }
+
+  .card-front::after {
+    font-size: 7rem;
+  }
+
+  .verse-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .verse-text {
+    font-size: 1.2rem;
+    line-height: 1.4;
+    margin-bottom: 1rem;
+  }
+
+  .verse-ref {
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .verse-meaning {
+    font-size: 0.9rem;
+    padding: 0.8rem;
+  }
+
+  .card-bg-pattern {
+    font-size: 4rem;
+  }
+}
