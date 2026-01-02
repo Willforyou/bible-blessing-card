@@ -1,0 +1,398 @@
+:root {
+  --cny-red: #8B0000;
+  --cny-bright-red: #D40000;
+  --cny-gold: #FFD700;
+  --cny-gold-gradient: linear-gradient(135deg, #FFD700 0%, #C5A021 50%, #FFD700 100%);
+  --cny-text-gold: #FFD700;
+  --cny-bg: #1a1a1a;
+  --cny-card-bg: #8B0000;
+
+  font-family: 'Noto Serif TC', serif, system-ui, -apple-system, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: var(--cny-bg);
+  overflow-x: hidden;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: #1a1a1a;
+  /* Base color */
+  position: relative;
+}
+
+/* Background Effects Container */
+.bg-effects {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  /* Changed from -1 to 0 */
+  overflow: hidden;
+  background: radial-gradient(circle at center, #3d0000 0%, #1a1a1a 100%);
+  /* Move gradient here */
+}
+
+/* Floating Lanterns Effect */
+.lantern {
+  position: absolute;
+  background: radial-gradient(circle at 30% 30%, #ff6600, #8B0000);
+  width: 25px;
+  height: 35px;
+  border-radius: 5px;
+  box-shadow: 0 0 25px rgba(255, 120, 0, 0.8), 0 0 10px rgba(255, 215, 0, 0.4);
+  opacity: 0.8;
+  animation: floatUp 25s linear infinite;
+}
+
+.lantern::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  width: 2px;
+  height: 10px;
+  background: gold;
+  transform: translateX(-50%);
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(110vh) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 0.8;
+  }
+
+  90% {
+    opacity: 0.8;
+  }
+
+  100% {
+    transform: translateY(-10vh) translateX(50px) rotate(20deg);
+    opacity: 0;
+  }
+}
+
+/* Sparkle/Gold Dust Effect */
+.sparkle {
+  position: absolute;
+  background: #FFD700;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  filter: blur(0.5px);
+  box-shadow: 0 0 5px #FFD700;
+  animation: twinkle 5s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.5);
+  }
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  /* Changed from center to flex-start */
+  min-height: 100vh;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 10vh 2rem 5rem;
+  /* Large top padding to center the initial state */
+  box-sizing: border-box;
+  position: relative;
+  z-index: 1;
+  /* Container above background effects */
+  background: transparent;
+  /* Ensure transparent background */
+}
+
+#root {
+  width: 100%;
+}
+
+.title {
+  font-size: 3.5rem;
+  margin-bottom: 2rem;
+  background: var(--cny-gold-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: var(--cny-gold);
+  /* Fallback */
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+  letter-spacing: 4px;
+  font-weight: 700;
+  animation: fadeIn 1s ease-out forwards;
+  /* Changed to simple fadeIn with forwards */
+}
+
+.subtitle {
+  font-size: 1.5rem;
+  color: var(--cny-gold);
+  margin-bottom: 3rem;
+  opacity: 0.9;
+  animation: fadeIn 1.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.draw-button {
+  padding: 1rem 3rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+  background: var(--cny-bright-red);
+  border: 2px solid var(--cny-gold);
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 15px rgba(212, 0, 0, 0.5);
+  position: relative;
+  overflow: hidden;
+}
+
+.draw-button:hover {
+  transform: scale(1.05) translateY(-3px);
+  box-shadow: 0 0 25px rgba(255, 215, 0, 0.4);
+  background: #f00;
+}
+
+.draw-button:active {
+  transform: scale(0.95);
+}
+
+.card-container {
+  margin-top: 3rem;
+  perspective: 1200px;
+  /* Slightly deeper perspective */
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  min-height: 620px;
+}
+
+.flip-card {
+  background-color: transparent;
+  width: 380px;
+  height: 580px;
+  perspective: 1000px;
+  cursor: pointer;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform-style: preserve-3d;
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.6);
+  border-radius: 20px;
+}
+
+.flip-card.is-flipped .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.card-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border: 4px solid var(--cny-gold);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2.5rem 2rem;
+  box-sizing: border-box;
+}
+
+/* Front Face (Cover) */
+.card-front {
+  background: var(--cny-card-bg);
+  background-image:
+    radial-gradient(circle at 50% 50%, rgba(255, 215, 0, 0.1) 0%, transparent 70%),
+    url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0l2 18h18l-15 11 6 18-11-13-11 13 6-18-15-11h18z' fill='%23ffd700' fill-opacity='0.05'/%3E%3C/svg%3E");
+  justify-content: center;
+}
+
+.card-front::after {
+  content: '福';
+  font-size: 10rem;
+  color: var(--cny-gold);
+  opacity: 0.3;
+  text-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+  font-family: 'Noto Serif TC', serif;
+}
+
+.card-front-hint {
+  position: absolute;
+  bottom: 2rem;
+  color: var(--cny-gold);
+  font-size: 0.9rem;
+  letter-spacing: 2px;
+  opacity: 0.8;
+  animation: pulse 2s infinite;
+}
+
+/* Back Face (Content) */
+.card-back {
+  background: var(--cny-card-bg);
+  transform: rotateY(180deg);
+  justify-content: flex-start;
+  box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.3);
+}
+
+.card {
+  /* Keep specific styles for content layout */
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: transparent;
+  padding: 0;
+  box-shadow: none;
+  transform: none;
+  transition: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-category {
+  font-size: 0.9rem;
+  color: var(--cny-gold);
+  border: 1px solid var(--cny-gold);
+  padding: 2px 12px;
+  border-radius: 20px;
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.verse-icon {
+  font-size: 3rem;
+  margin-bottom: 1.5rem;
+  filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
+  animation: pulse 2s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+}
+
+.verse-text {
+  font-size: 1.6rem;
+  line-height: 1.5;
+  color: #fff;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-weight: 600;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.verse-ref {
+  font-size: 1.1rem;
+  color: var(--cny-gold);
+  margin-bottom: 2rem;
+  font-style: italic;
+  opacity: 0.9;
+}
+
+.verse-meaning {
+  margin-top: auto;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  border-left: 3px solid var(--cny-gold);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
+  text-align: left;
+  animation: slideUp 0.8s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card-bg-pattern {
+  position: absolute;
+  bottom: 10px;
+  right: 15px;
+  opacity: 0.05;
+  font-size: 6rem;
+  color: var(--cny-gold);
+  pointer-events: none;
+  z-index: 0;
+}
