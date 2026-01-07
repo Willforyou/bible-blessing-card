@@ -197,25 +197,50 @@ body {
   }
 }
 
+.button-group {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
 .draw-button {
-  padding: 1rem 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.2rem 3rem;
   font-size: 1.5rem;
   font-weight: 700;
-  color: #fff;
-  background: var(--cny-bright-red);
-  border: 2px solid var(--cny-gold);
+  color: var(--cny-red);
+  background: var(--cny-gold-gradient);
+  border: none;
   border-radius: 50px;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 0 15px rgba(212, 0, 0, 0.5);
+  box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   position: relative;
   overflow: hidden;
+  min-width: 240px;
+}
+
+.draw-button.secondary {
+  background: transparent;
+  border: 2px solid var(--cny-gold);
+  color: var(--cny-gold);
+  box-shadow: none;
+  font-size: 1.2rem;
+}
+
+.draw-button.secondary:hover {
+  background: rgba(255, 215, 0, 0.1);
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(255, 215, 0, 0.1);
 }
 
 .draw-button:hover {
-  transform: scale(1.05) translateY(-3px);
-  box-shadow: 0 0 25px rgba(255, 215, 0, 0.4);
-  background: #f00;
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 15px 40px rgba(255, 215, 0, 0.4);
 }
 
 .draw-button:active {
@@ -318,6 +343,8 @@ body {
   transition: none;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  /* Ensure contents are centered */
 }
 
 .card-category {
@@ -356,13 +383,35 @@ body {
 }
 
 .verse-text {
-  font-size: 1.6rem;
-  line-height: 1.5;
+  font-size: 1.5rem;
+  /* Slightly reduced for better fit */
+  line-height: 1.6;
   color: #fff;
   margin-bottom: 1.5rem;
   text-align: center;
   font-weight: 600;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  max-height: 240px;
+  /* Limit height for long verses */
+  overflow-y: auto;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+/* Custom Scrollbar for Verse Text */
+.verse-text::-webkit-scrollbar {
+  width: 4px;
+}
+
+.verse-text::-webkit-scrollbar-track {
+  background: rgba(255, 215, 0, 0.05);
+  border-radius: 10px;
+}
+
+.verse-text::-webkit-scrollbar-thumb {
+  background: var(--cny-gold);
+  border-radius: 10px;
 }
 
 .verse-ref {
@@ -374,16 +423,19 @@ body {
 }
 
 .verse-meaning {
-  margin-top: auto;
-  padding: 1rem;
+  margin-top: 1rem;
+  padding: 0.8rem 1rem;
   background: rgba(0, 0, 0, 0.2);
   border-radius: 10px;
   border-left: 3px solid var(--cny-gold);
-  font-size: 1.05rem;
+  font-size: 0.95rem;
+  /* Slightly reduced */
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.9);
   text-align: left;
   animation: slideUp 0.8s ease-out;
+  flex-shrink: 0;
+  /* Don't compress the meaning box */
 }
 
 @keyframes slideUp {
@@ -429,9 +481,22 @@ body {
     word-break: keep-all;
   }
 
+  .button-group {
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
   .draw-button {
     padding: 0.8rem 2rem;
     font-size: 1.2rem;
+    min-width: 80vw;
+  }
+
+  .draw-button.secondary {
+    font-size: 1.1rem;
+    padding: 0.7rem 1.5rem;
   }
 
   .card-container {
