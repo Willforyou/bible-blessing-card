@@ -142,17 +142,29 @@ body {
 .title {
   font-size: 3.5rem;
   margin-bottom: 2rem;
-  background: var(--cny-gold-gradient);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
   color: var(--cny-gold);
-  /* Fallback */
+  /* 絕對可見的備用顏色 */
   text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
   letter-spacing: 4px;
   font-weight: 700;
   animation: fadeIn 1s ease-out forwards;
-  /* Changed to simple fadeIn with forwards */
+  display: block;
+  text-align: center;
+  background: none;
+  /* 預設不填滿背景 */
+  position: relative;
+}
+
+/* 僅在使用瀏覽器明確支援裁剪且支援透明填色時才啟用漸層 */
+@supports ((-webkit-background-clip: text) or (background-clip: text)) and ((-webkit-text-fill-color: transparent) or (color: transparent)) {
+  .title {
+    background-image: var(--cny-gold-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    /* 只有在裁剪生效時才讓字體透明 */
+  }
 }
 
 .subtitle {
