@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react'
 import confetti from 'canvas-confetti'
-import { toPng } from 'html-to-image'
 import verses from './verses.json'
 import './index.css'
 
@@ -9,7 +8,6 @@ function App() {
   const [isAnimating, setIsAnimating] = useState(false)
   const [showCard, setShowCard] = useState(false)
   const [isFlipped, setIsFlipped] = useState(false)
-  const cardRef = useRef(null)
 
   // Generate random background elements
   const lanterns = useMemo(() => Array.from({ length: 15 }).map((_, i) => ({
@@ -53,84 +51,6 @@ function App() {
       }, 500)
     }, 400)
   }, [isAnimating])
-
-  const handleDownload = useCallback(async () => {
-    if (!cardRef.current || !currentVerse) return
-
-    const card = cardRef.current
-    const verseTextEl = card.querySelector('.verse-text')
-    const originalMaxHeight = verseTextEl ? verseTextEl.style.maxHeight : ''
-    const originalOverflow = verseTextEl ? verseTextEl.style.overflow : ''
-
-    try {
-      // Temporarily expand to capture full text
-      if (verseTextEl) {
-        verseTextEl.style.maxHeight = 'none'
-        verseTextEl.style.overflow = 'visible'
-      }
-
-      // Add a small delay for layout stabilization
-      await new Promise(resolve => setTimeout(resolve, 300))
-
-      const dataUrl = await toPng(card, {
-        quality: 0.95,
-        pixelRatio: 2,
-        backgroundColor: '#b30000',
-        style: {
-          transform: 'none',
-          borderRadius: '20px'
-        },
-        filter: (node) => {
-          // Avoid capturing buttons if they accidentally get in the ref
-          return !node.className || !node.className.toString().includes('button-group')
-        }
-      })
-
-      if (verseTextEl) {
-        verseTextEl.style.maxHeight = originalMaxHeight
-        verseTextEl.style.overflow = originalOverflow
-      }
-
-      // Sanitize filename for Windows compatibility
-      const sanitizedFilename = currentVerse.reference.replace(/:/g, '_')
-
-      const link = document.createElement('a')
-      link.href = dataUrl
-      link.download = `聖經祝福卡-${sanitizedFilename}.png`
-      document.body.appendChild(link)
-
-      try {
-        link.click()
-      } finally {
-        setTimeout(() => {
-          document.body.removeChild(link)
-        }, 200)
-      }
-
-      // Fallback: If no download appeared, offer preview
-      setTimeout(() => {
-        const confirmResult = window.confirm('如果下載沒有自動開始，是否在網頁中開啟預覽圖片供您手動長按存檔？')
-        if (confirmResult) {
-          const newWin = window.open()
-          if (newWin) {
-            newWin.document.write(`
-              <html>
-                <body style="margin:0; display:flex; flex-direction:column; align-items:center; justify-content:center; background:#1a1a1a; color:white; font-family:sans-serif;">
-                  <p style="margin:20px;">長按圖片即可儲存到手機相簿 🧧</p>
-                  <img src="${dataUrl}" style="max-width:90%; border-radius:15px; box-shadow:0 10px 40px rgba(0,0,0,0.5);">
-                  <button onclick="window.close()" style="margin:30px; padding:10px 20px; background:#ffd700; border:none; border-radius:5px; cursor:pointer; font-weight:bold;">關閉預覽</button>
-                </body>
-              </html>
-            `)
-          }
-        }
-      }, 800)
-
-    } catch (error) {
-      console.error('Download failed:', error)
-      alert('抱歉，製作圖片時發生錯誤。請嘗試重新整理網頁，或直接使用手機截圖。')
-    }
-  }, [currentVerse])
 
   return (
     <div className="container">
@@ -177,7 +97,7 @@ function App() {
               <div className="card-face card-front">
                 <div className="card-front-hint">正在為您翻開祝福...</div>
               </div>
-              <div className="card-face card-back" ref={cardRef}>
+              <div className="card-face card-back">
                 <div className="card">
                   <div className="card-bg-pattern">🧧</div>
                   <span className="card-category">{currentVerse.category}</span>
@@ -197,14 +117,9 @@ function App() {
       </div>
 
       {showCard && (
-        <div className="button-group" style={{ marginTop: '2rem' }}>
-          <button className="draw-button secondary" onClick={handleDownload}>
-            <span>🧧 儲存為圖片</span>
-          </button>
-          <button className="draw-button" onClick={drawCard}>
-            <span>再次領取祝福</span>
-          </button>
-        </div>
+        <button className="draw-button" onClick={drawCard} style={{ marginTop: '2rem' }}>
+          再次領取祝福
+        </button>
       )}
 
       <footer style={{ marginTop: '4rem', opacity: 0.5, fontSize: '0.8rem', color: '#ffd700' }}>
