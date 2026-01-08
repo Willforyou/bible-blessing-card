@@ -197,6 +197,14 @@ body {
   }
 }
 
+.button-group {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
 .draw-button {
   padding: 1.2rem 3rem;
   font-size: 1.5rem;
@@ -210,6 +218,20 @@ body {
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   position: relative;
   overflow: hidden;
+  min-width: 200px;
+}
+
+.draw-button.secondary {
+  background: transparent;
+  border: 2px solid var(--cny-gold);
+  color: var(--cny-gold);
+  box-shadow: none;
+  font-size: 1.25rem;
+}
+
+.draw-button.secondary:hover {
+  background: rgba(255, 215, 0, 0.1);
+  transform: translateY(-5px);
 }
 
 .draw-button:hover {
@@ -455,9 +477,24 @@ body {
     word-break: keep-all;
   }
 
+  .button-group {
+    flex-direction: column-reverse;
+    width: 100%;
+    align-items: center;
+    gap: 1rem;
+  }
+
   .draw-button {
     padding: 0.8rem 2rem;
     font-size: 1.2rem;
+    width: 80%;
+    min-width: auto;
+  }
+
+  .draw-button.secondary {
+    font-size: 1.1rem;
+    border-width: 1px;
+    padding: 0.7rem 1.5rem;
   }
 
   .card-container {

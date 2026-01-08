@@ -25,8 +25,27 @@ function App() {
     delay: `${Math.random() * 10}s`,
   })), [])
 
+  // Handle URL Parameters for deep linking
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const verseId = params.get('v')
+    if (verseId) {
+      const targetVerse = verses.find(v => v.id.toString() === verseId)
+      if (targetVerse) {
+        setCurrentVerse(targetVerse)
+        setShowCard(true)
+        setIsFlipped(true)
+      }
+    }
+  }, [])
+
   const drawCard = useCallback(() => {
     if (isAnimating) return
+
+    // Clear URL params when drawing a new card
+    if (window.location.search) {
+      window.history.pushState({}, '', window.location.pathname)
+    }
 
     setIsAnimating(true)
     setShowCard(false)
@@ -51,6 +70,33 @@ function App() {
       }, 500)
     }, 400)
   }, [isAnimating])
+
+  const handleShare = async () => {
+    if (!currentVerse) return
+
+    const shareUrl = `${window.location.origin}${window.location.pathname}?v=${currentVerse.id}`
+    const shareText = `我在「新春蒙福」抽到了這份應許：『${currentVerse.verse}』(${currentVerse.reference})，你也來領取你的新年祝福吧！🧧`
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: '新春蒙福 - 聖經金句祝福卡',
+          text: shareText,
+          url: shareUrl,
+        })
+      } catch (err) {
+        console.error('Share failed:', err)
+      }
+    } else {
+      // Fallback for desktop: Copy to clipboard
+      try {
+        await navigator.clipboard.writeText(`${shareText}\n${shareUrl}`)
+        alert('連結已複製到剪貼簿，快分享給朋友吧！🧧')
+      } catch (err) {
+        alert('複製失敗，請手動分享網址')
+      }
+    }
+  }
 
   return (
     <div className="container">
@@ -117,9 +163,14 @@ function App() {
       </div>
 
       {showCard && (
-        <button className="draw-button" onClick={drawCard} style={{ marginTop: '2rem' }}>
-          再次領取祝福
-        </button>
+        <div className="button-group">
+          <button className="draw-button secondary" onClick={handleShare}>
+            🧧 分享這份祝福
+          </button>
+          <button className="draw-button" onClick={drawCard}>
+            再次領取祝福
+          </button>
+        </div>
       )}
 
       <footer style={{ marginTop: '4rem', opacity: 0.5, fontSize: '0.8rem', color: '#ffd700' }}>
@@ -128,5 +179,4 @@ function App() {
     </div>
   )
 }
-
 export default App
